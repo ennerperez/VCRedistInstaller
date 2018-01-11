@@ -21,7 +21,7 @@ foreach ($item in $source)
     $source = $item[1]
     $target = $item[2]
 
-    $output = "$PSScriptRoot"
+    $output = "$PSScriptRoot\VCRedistInstaller\$target"
 
     if(![System.IO.File]::Exists($output)){
 	   $start_time = Get-Date

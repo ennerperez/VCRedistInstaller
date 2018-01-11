@@ -5,15 +5,12 @@
   <Fragment>
 
     <!-- Detect existing version of VC ++ 2005 x86 libraries -->
-
-    <Property Id="VCRUNTIME80_X86_VERSION" Value="false">
-      <RegistrySearch Id="get_vcruntime80_x86" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7299052b-02a4-4627-81f2-1818da5d550d}" Win64="no" Name="DisplayVersion" Type="raw" />
-    </Property>
+    <util:RegistrySearch Id="get_vcruntime80_x86" Variable="vcruntime80_x86" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7299052b-02a4-4627-81f2-1818da5d550d}" Result="exists" />
+    <util:RegistrySearch Id="get_vcruntime80_x86_version" Variable="vcruntime80_x86_version" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7299052b-02a4-4627-81f2-1818da5d550d}" Value="DisplayVersion" Format="compatible" />
 
     <!-- Detect existing version of VC ++ 2005 x64 libraries -->
-    <Property Id="VCRUNTIME80_X64_VERSION" Value="false">
-      <RegistrySearch Id="get_vcruntime80_x64" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{071c9b48-7c32-4621-a0ac-3f809523288f}" Win64="yes" Name="DisplayVersion" Type="raw" />
-    </Property>
+    <util:RegistrySearch Id="get_vcruntime80_x64" Condition="VersionNT64" Variable="vcruntime80_x64" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{071c9b48-7c32-4621-a0ac-3f809523288f}" Win64="yes" Result="exists" />
+    <util:RegistrySearch Id="get_vcruntime80_x64_version" Condition="VersionNT64" Variable="vcruntime80_x64_version" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{071c9b48-7c32-4621-a0ac-3f809523288f}" Win64="yes" Value="DisplayVersion" Format="compatible" />
 
     <PackageGroup Id="vcredist_2005">
       <ExePackage Id="vcredist_2005_x86"
@@ -28,8 +25,8 @@
                   Name="vcredist\2005\vcredist_x86.exe"
                   InstallCommand="/q:a /c:&quot;VCREDI~3.EXE /q:a /c:&quot;&quot;msiexec /i vcredist.msi /qn&quot;&quot; &quot;"
                   UninstallCommand="/q:a /c:&quot;VCREDI~3.EXE /q:a /c:&quot;&quot;msiexec /x vcredist.msi /qn&quot;&quot; &quot;"
-                  DetectCondition="VCRUNTIME80_X86_VERSION AND VCRUNTIME80_X86_VERSION &gt;= &quot;8.0&quot;"
-                  InstallCondition="(NOT VCRUNTIME80_X86_VERSION OR VCRUNTIME80_X86_VERSION &lt; &quot;8.0&quot;)">
+                  DetectCondition="vcruntime80_x86 AND vcruntime80_x86_version &gt;= &quot;8.0&quot;"
+                  InstallCondition="(NOT vcruntime80_x86 OR vcruntime80_x86_version &lt; &quot;8.0&quot;)">
         <!-- -->
         <ExitCode Value="3010" Behavior="forceReboot" />
         <!-- Ignore "Newer version installed" error -->
@@ -47,8 +44,8 @@
                   Name="vcredist\2005\vcredist_x64.exe"
                   InstallCommand="/q:a /c:&quot;VCREDI~2.EXE /q:a /c:&quot;&quot;msiexec /i vcredist.msi /qn&quot;&quot; &quot;"
                   UninstallCommand="/q:a /c:&quot;VCREDI~2.EXE /q:a /c:&quot;&quot;msiexec /x vcredist.msi /qn&quot;&quot; &quot;"
-                  DetectCondition="VCRUNTIME80_X86_VERSION AND VCRUNTIME80_X64_VERSION &gt;= &quot;8.0&quot;"
-                  InstallCondition="(NOT VCRUNTIME80_X64_VERSION OR VCRUNTIME80_X64_VERSION &lt; &quot;8.0&quot;) AND VersionNT64" After="vcredist_2005_x86">
+                  DetectCondition="vcruntime80_x64 and vcruntime80_x64_version &gt;= &quot;8.0&quot;"
+                  InstallCondition="(NOT vcruntime80_x64 OR vcruntime80_x64_version &lt; &quot;8.0&quot;) AND VersionNT64" After="vcredist_2005_x86">
         <!-- -->
         <ExitCode Value="3010" Behavior="forceReboot" />
         <!-- Ignore "Newer version installed" error -->
