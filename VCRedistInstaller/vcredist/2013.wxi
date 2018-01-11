@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi"
+         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+         xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+
+    <!-- Detect existing version of VC ++ 2013 x86 libraries -->
+    <util:FileSearch Id="get_vcruntime120_x86" Variable="vcruntime120_x86" Path="[SystemFolder]msvcp120.dll" Result="exists" />
+    <util:FileSearch Id="get_vcruntime120_x86_version" Variable="vcruntime120_x86_version" Path="[SystemFolder]msvcp120.dll" Result="version" />
+
+    <!-- Detect existing version of VC ++ 2013 x64 libraries -->
+    <util:FileSearch Id="get_vcruntime120_x64" Condition="VersionNT64" Variable="vcruntime120_x64" Path="[System64Folder]msvcp120.dll" Result="exists" />
+    <util:FileSearch Id="get_vcruntime120_x64_version" Condition="VersionNT64" Variable="vcruntime120_x64_version" Path="[System64Folder]msvcp120.dll" Result="version" />
+
+    <PackageGroup Id="vcredist_2013">
+      <ExePackage Id="vcredist_2013_x86"
+                  DisplayName="Microsoft Visual C++ 2013 Redistributable Package (x86)"
+                  DownloadUrl="http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2013\vcredist_x86.exe"
+                  Name="vcredist\2013\vcredist_x86.exe"
+                  InstallCommand="/q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot;"
+                  UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  DetectCondition="vcruntime120_x86 AND vcruntime120_x86_version &gt;= &quot;12.0&quot;"
+                  InstallCondition="(NOT vcruntime120_x86 OR vcruntime120_x86_version &lt; &quot;12.0&quot;)">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+      <ExePackage Id="vcredist_2013_x64"
+                  DisplayName="Microsoft Visual C++ 2013 Redistributable Package (x64)"
+                  DownloadUrl="http://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x64.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2013\vcredist_x64.exe"
+                  Name="vcredist\2013\vcredist_x64.exe"
+                  InstallCommand="/q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot;"
+                  UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  DetectCondition="vcruntime120_x64 AND vcruntime120_x64_version &gt;= &quot;12.0&quot;"
+                  InstallCondition="(NOT vcruntime120_x64 OR vcruntime120_x64_version &lt; &quot;12.0&quot;) AND VersionNT64" After="vcredist_2013_x86">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+    </PackageGroup>
+  </Fragment>
+</Include>

@@ -298,3 +298,6 @@ tools/**
 # should be stored in the .pubxml.user file.
 
 # End of https://www.gitignore.io/api/visualstudio
+
+# Visual C++ Setup
+**/vcredist/**/*.exe
