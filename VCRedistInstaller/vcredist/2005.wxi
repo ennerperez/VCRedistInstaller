@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi"
+         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+         xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+
+    <!-- Detect existing version of VC ++ 2005 x86 libraries -->
+
+    <Property Id="VCRUNTIME80_X86_VERSION" Value="false">
+      <RegistrySearch Id="get_vcruntime80_x86" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{7299052b-02a4-4627-81f2-1818da5d550d}" Win64="no" Name="DisplayVersion" Type="raw" />
+    </Property>
+
+    <!-- Detect existing version of VC ++ 2005 x64 libraries -->
+    <Property Id="VCRUNTIME80_X64_VERSION" Value="false">
+      <RegistrySearch Id="get_vcruntime80_x64" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\{071c9b48-7c32-4621-a0ac-3f809523288f}" Win64="yes" Name="DisplayVersion" Type="raw" />
+    </Property>
+
+    <PackageGroup Id="vcredist_2005">
+      <ExePackage Id="vcredist_2005_x86"
+                  DisplayName="Microsoft Visual C++ 2005 SP1 Redistributable Package (x86)"
+                  DownloadUrl="https://download.microsoft.com/download/e/1/c/e1c773de-73ba-494a-a5ba-f24906ecf088/vcredist_x86.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2005\vcredist_x86.exe"
+                  Name="vcredist\2005\vcredist_x86.exe"
+                  InstallCommand="/q:a /c:&quot;VCREDI~3.EXE /q:a /c:&quot;&quot;msiexec /i vcredist.msi /qn&quot;&quot; &quot;"
+                  UninstallCommand="/q:a /c:&quot;VCREDI~3.EXE /q:a /c:&quot;&quot;msiexec /x vcredist.msi /qn&quot;&quot; &quot;"
+                  DetectCondition="VCRUNTIME80_X86_VERSION AND VCRUNTIME80_X86_VERSION &gt;= &quot;8.0&quot;"
+                  InstallCondition="(NOT VCRUNTIME80_X86_VERSION OR VCRUNTIME80_X86_VERSION &lt; &quot;8.0&quot;)">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+      <ExePackage Id="vcredist_2005_x64"
+                  DisplayName="Microsoft Visual C++ 2005 SP1 Redistributable Package (x64)"
+                  DownloadUrl="https://download.microsoft.com/download/d/4/1/d41aca8a-faa5-49a7-a5f2-ea0aa4587da0/vcredist_x64.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2005\vcredist_x64.exe"
+                  Name="vcredist\2005\vcredist_x64.exe"
+                  InstallCommand="/q:a /c:&quot;VCREDI~2.EXE /q:a /c:&quot;&quot;msiexec /i vcredist.msi /qn&quot;&quot; &quot;"
+                  UninstallCommand="/q:a /c:&quot;VCREDI~2.EXE /q:a /c:&quot;&quot;msiexec /x vcredist.msi /qn&quot;&quot; &quot;"
+                  DetectCondition="VCRUNTIME80_X86_VERSION AND VCRUNTIME80_X64_VERSION &gt;= &quot;8.0&quot;"
+                  InstallCondition="(NOT VCRUNTIME80_X64_VERSION OR VCRUNTIME80_X64_VERSION &lt; &quot;8.0&quot;) AND VersionNT64" After="vcredist_2005_x86">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+    </PackageGroup>
+  </Fragment>
+</Include>

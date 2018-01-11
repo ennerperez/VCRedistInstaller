@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Include xmlns="http://schemas.microsoft.com/wix/2006/wi"
+         xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
+         xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+  <Fragment>
+
+    <!-- Detect existing version of VC ++ 2008 x86 libraries -->
+    <util:FileSearch Id="get_vcruntime90_x86" Variable="vcruntime90_x86" Path="[CommonFilesFolder]Microsoft Shared\VC\msdia90.dll" Result="exists" />
+    <util:FileSearch Id="get_vcruntime90_x86_version" Variable="vcruntime90_x86_version" Path="[CommonFilesFolder]Microsoft Shared\VC\msdia90.dll" Result="version" />
+
+    <!-- Detect existing version of VC ++ 2008 x64 libraries -->
+    <util:FileSearch Id="get_vcruntime90_x64" Condition="VersionNT64" Variable="vcruntime90_x64" Path="[CommonFiles64Folder]Microsoft Shared\VC\msdia90.dll" Result="exists" />
+    <util:FileSearch Id="get_vcruntime90_x64_version" Condition="VersionNT64" Variable="vcruntime90_x64_version" Path="[CommonFiles64Folder]Microsoft Shared\VC\msdia90.dll" Result="version" />
+
+    <PackageGroup Id="vcredist_2008">
+      <ExePackage Id="vcredist_2008_x86"
+                  DisplayName="Microsoft Visual C++ 2008 SP1 Redistributable Package (x86)"
+                  DownloadUrl="https://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2008\vcredist_x86.exe"
+                  Name="vcredist\2008\vcredist_x86.exe"
+                  InstallCommand="/q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot;"
+                  UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  DetectCondition="vcruntime90_x86 AND vcruntime90_x86_version &gt;= &quot;9.0&quot;"
+                  InstallCondition="(NOT vcruntime90_x86 OR vcruntime90_x86_version &lt; &quot;9.0&quot;)">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+      <ExePackage Id="vcredist_2008_x64"
+                  DisplayName="Microsoft Visual C++ 2008 SP1 Redistributable Package (x64)"
+                  DownloadUrl="https://download.microsoft.com/download/2/d/6/2d61c766-107b-409d-8fba-c39e61ca08e8/vcredist_x64.exe"
+                  Compressed="no"
+                  Cache="no"
+                  Permanent="yes"
+                  PerMachine="yes"
+                  Vital="no"
+                  SourceFile="vcredist\2008\vcredist_x64.exe"
+                  Name="vcredist\2008\vcredist_x64.exe"
+                  InstallCommand="/q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  RepairCommand="/q /norestart /repair /ChainingPackage &quot;[WixBundleName]&quot;"
+                  UninstallCommand="/uninstall /q /norestart /ChainingPackage &quot;[WixBundleName]&quot;"
+                  DetectCondition="vcruntime90_x64 AND vcruntime90_x64_version &gt;= &quot;9.0&quot;"
+                  InstallCondition="(NOT vcruntime90_x64 OR vcruntime90_x64_version &lt; &quot;9.0&quot;) AND VersionNT64" After="vcredist_2008_x86">
+        <!-- -->
+        <ExitCode Value="3010" Behavior="forceReboot" />
+        <!-- Ignore "Newer version installed" error -->
+        <ExitCode Value="1638" Behavior="success" />
+      </ExePackage>
+    </PackageGroup>
+  </Fragment>
+</Include>
