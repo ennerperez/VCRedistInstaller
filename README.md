@@ -17,6 +17,7 @@ See the [changelog](CHANGELOG.md) for changes.
 - [x] Microsoft Visual C++ Redistributable 2010 SP1
 - [x] Microsoft Visual C++ Redistributable 2012 Update 4
 - [x] Microsoft Visual C++ Redistributable 2013
+- [x] Microsoft Visual C++ Redistributable 2015
 - [x] Microsoft Visual C++ Redistributable 2017
 
 ## Table of contents
