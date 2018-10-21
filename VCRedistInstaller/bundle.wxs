@@ -2,7 +2,7 @@
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi"
      xmlns:bal="http://schemas.microsoft.com/wix/BalExtension"
      xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
-  <Bundle Name="Microsoft Visual C++ Redistributable All-In-One Installer" Version="1.0.0.0" Manufacturer="Microsoft Corporation" UpgradeCode="903c6230-9167-402d-bfaf-e5c1307471cf">
+  <Bundle Name="Microsoft Visual C++ Redistributable All-In-One Installer" Version="1.0.1" Manufacturer="Microsoft Corporation" UpgradeCode="903c6230-9167-402d-bfaf-e5c1307471cf">
     <BootstrapperApplicationRef Id="WixStandardBootstrapperApplication.RtfLicense">
       <bal:WixStandardBootstrapperApplication
         LogoFile="logo.png"

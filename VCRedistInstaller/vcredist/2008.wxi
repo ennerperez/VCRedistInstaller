@@ -15,7 +15,7 @@
     <PackageGroup Id="vcredist_2008">
       <ExePackage Id="vcredist_2008_x86"
                   DisplayName="Microsoft Visual C++ 2008 SP1 Redistributable Package (x86)"
-                  DownloadUrl="https://download.microsoft.com/download/d/d/9/dd9a82d0-52ef-40db-8dab-795376989c03/vcredist_x86.exe"
+                  DownloadUrl="https://download.microsoft.com/download/9/7/7/977B481A-7BA6-4E30-AC40-ED51EB2028F2/vcredist_x86.exe"
                   Compressed="no"
                   Cache="no"
                   Permanent="yes"
@@ -35,7 +35,7 @@
       </ExePackage>
       <ExePackage Id="vcredist_2008_x64"
                   DisplayName="Microsoft Visual C++ 2008 SP1 Redistributable Package (x64)"
-                  DownloadUrl="https://download.microsoft.com/download/2/d/6/2d61c766-107b-409d-8fba-c39e61ca08e8/vcredist_x64.exe"
+                  DownloadUrl="https://download.microsoft.com/download/9/7/7/977B481A-7BA6-4E30-AC40-ED51EB2028F2/vcredist_x64.exe"
                   Compressed="no"
                   Cache="no"
                   Permanent="yes"
